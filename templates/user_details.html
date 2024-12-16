@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to top right, #000080, #87CEFA);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .details-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .user-details {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .user-details p {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #555;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="details-container">
+        <h2>User Details</h2>
+        {% if user %}
+        <div class="user-details">
+            <p><strong>Account ID:</strong> {{ user.account_id }}</p>
+            <p><strong>Applicant Name:</strong> {{ user.applicant_name }}</p>
+            <p><strong>Phone Number:</strong> {{ user.phone_number }}</p>
+            <p><strong>Address:</strong> {{ user.address }}</p>
+            <p><strong>Age:</strong> {{ user.age }}</p>
+            <p><strong>Credit Score:</strong> {{ user.credit_score }}</p>
+            <p><strong>Income:</strong> {{ user.income }}</p>
+            <p><strong>Co-applicant Income:</strong> {{ user.co_applicant_income }}</p>
+            <p><strong>Combined Income:</strong> {{ user.combined_income }}</p>
+            <p><strong>Account Balance:</strong> {{ user.account_balance }}</p>
+        </div>
+        {% else %}
+        <p>No details found for the entered User ID.</p>
+        {% endif %}
+        <form action="/manager_dashboard" method="GET">
+            <button type="submit">Back to Dashboard</button>
+        </form>
+    </div>
+</body>
+</html>

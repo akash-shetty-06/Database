@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking System Login</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to top right, #000080, #87CEFA);
+        }
+
+        .container {
+            width: 840px;
+            height: 525px;
+            display: flex;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .left-panel {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .left-panel h1 {
+            font-size: 36px;
+            margin: 0;
+        }
+
+        .left-panel p {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+
+        .left-panel span {
+            font-size: 12px;
+            color: #ddd;
+        }
+
+        .right-panel {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: white;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+        }
+
+        .login-box .icon {
+            font-size: 50px;
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+
+        .login-box h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .login-box form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .login-box form input,
+        .login-box form select,
+        .login-box form button {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .login-box form button {
+            background: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .login-box form button:hover {
+            background: #0056b3;
+        }
+
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .options a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        .options a:hover {
+            text-decoration: underline;
+        }
+
+        .status-message {
+            margin-top: 20px;
+            font-size: 14px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <div>
+                <h1>Welcome to the Bank</h1>
+                <p>Secure and Easy Banking</p>
+                <span>Enhanced Security</span>
+            </div>
+        </div>
+        <div class="right-panel">
+            <div class="login-box">
+                <div class="icon">👤</div>
+                <h2>Banking System Login</h2>
+                <form id="loginForm">
+                    <label for="account-type">Account Type</label>
+                    <select id="account-type" name="account_type" required>
+                        <option value="manager">Manager</option>
+                        <option value="customer">Customer</option>
+                    </select>
+                    <label for="user-id">User ID</label>
+                    <input type="text" id="user-id" placeholder="Enter your ID" required>
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                    <div class="options">
+                        <label>
+                            <input type="checkbox"> Remember me
+                        </label>
+                        <a href="#">Forgot Password?</a>
+                    </div>
+                    <button type="button" onclick="login()">Login</button>
+                </form>
+                <div id="status-message" class="status-message"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        async function login() {
+            const userId = document.getElementById('user-id').value;
+            const password = document.getElementById('password').value;
+            const accountType = document.getElementById('account-type').value;
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: userId, password: password, account_type: accountType })
+                });
+
+                const result = await response.json();
+                const statusMessage = document.getElementById('status-message');
+
+                if (response.ok) {
+                    statusMessage.style.color = 'green';
+                    statusMessage.textContent = result.message;
+
+                    if (result.redirect) {
+                        window.location.href = result.redirect;
+                    }
+                } else {
+                    statusMessage.style.color = 'red';
+                    statusMessage.textContent = result.error;
+                }
+            } catch (error) {
+                const statusMessage = document.getElementById('status-message');
+                statusMessage.style.color = 'red';
+                statusMessage.textContent = 'An error occurred. Please try again.';
+                console.error('Error during login:', error);
+            }
+        }
+    </script>
+</body>
+</html>
